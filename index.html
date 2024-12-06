@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Rudolph - The Christmas Mascot
+    </title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&display=swap" rel="stylesheet">
+
+</head>
+<body class=""
+      style="background-color: #faffff;background: url('/assets/images/ruolphweb.png'); background-size: cover">
+
+
+<canvas class="canvas" style="z-index: 30"></canvas>
+<div>
+    <div id="winter-wrap" style="position: relative">
+        <div class="snow"></div>
+        <div class="snow2"></div>
+        <div class="container" style="height: 800px;">
+            <div class="row">
+                <div class="col-12">
+
+
+                    <div class="ms-auto position-relative p-5 text-center handjet d-flex flex-column gap-3 align-items-center"
+                         style="width: 50rem;
+    margin-top: 14%;">
+                        <h1 style="font-size: 7rem;line-height: 5rem;">
+                            Rudolph
+                        </h1>
+                        <h2 style="font-size: 3rem;line-height: 3rem;">
+                            The Christmas Mascot
+                        </h2>
+
+                        <div class="form-control ca" style="">
+                            CA: AMwxLkhQB54VF2PQgfK2LLf4q8UL1dYsQKVTwHjJpump
+                        </div>
+                        <div class="d-flex gap-3">
+                            <a class="button" href="https://t.me/thechristmasmascot" type="button">
+                                <img alt="" src="/assets/images/telegram-icon-2048x1739-6c7sghxm.png"
+                                     style="height:42px;">
+                            </a>
+                            <a class="button" href="https://x.com/rudolphxmascot" type="button">
+                                <img alt="" src="/assets/images/X_logo_2023_(white).png"
+                                     style="height:42px;">
+                            </a>
+                            <a class="button"
+                               href="https://dexscreener.com/solana/AMwxLkhQB54VF2PQgfK2LLf4q8UL1dYsQKVTwHjJpump"
+                               type="button">
+                                <img alt="" src="/assets/images/dexscreener+logo_transparent.png" style="height: 42px;">
+                            </a>
+                            <a class="button" href="https://pump.fun/AMwxLkhQB54VF2PQgfK2LLf4q8UL1dYsQKVTwHjJpump"
+                               type="button">
+                                <img alt="" src="/assets/images/pumpfunlogo.png" style="height: 42px;">
+                            </a>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script>
+    const canvas = document.querySelector('.canvas');
+    const ctx = canvas.getContext('2d');
+
+    const pixelRatio = window.devicePixelRatio || 1;
+
+    const snowflakes = [];
+
+    class Snowflake {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+
+            const maxSize = 3;
+            this.size = Math.random() * (maxSize - 1) + 1;
+            this.velocity = this.size * 0.35;
+            const opacity = this.size / maxSize;
+            this.fill = `rgb(255 255 255 / ${opacity})`;
+
+            this.windSpeed = (Math.random() - 0.5) * 0.1;
+            this.windAngle = Math.random() * Math.PI * 2;
+        }
+
+        isOutsideCanvas() {
+            return this.y > canvas.height + this.size;
+        }
+
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = -this.size;
+        }
+
+        update() {
+            this.windAngle += this.windSpeed;
+            this.wind = Math.cos(this.windAngle) * 0.5;
+
+            this.x += this.wind;
+            this.y += this.velocity;
+
+            if (this.isOutsideCanvas()) {
+                this.reset();
+            }
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.fill;
+            ctx.fill();
+            ctx.closePath();
+        }
+    }
+
+    const createSnowflakes = () => {
+        snowflakeCount = Math.floor(window.innerWidth * window.innerHeight / 1400);
+
+        for (let i = 0; i < snowflakeCount; i++) {
+            snowflakes.push(new Snowflake());
+        }
+    }
+
+    const resizeCanvas = () => {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        canvas.width = width * pixelRatio;
+        canvas.height = height * pixelRatio;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.scale(pixelRatio, pixelRatio);
+        snowflakes.length = 0;
+        createSnowflakes();
+    };
+
+    window.addEventListener('resize', resizeCanvas);
+
+    resizeCanvas();
+
+    const render = () => {
+        requestAnimationFrame(render);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        snowflakes.forEach(snowflake => {
+            snowflake.update();
+            snowflake.draw();
+        });
+    };
+
+    render();
+</script>
+</html>
